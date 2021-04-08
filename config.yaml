@@ -1,0 +1,126 @@
+# Gin-G Global Configuration
+
+# jwt configuration
+jwt:
+  signing-key: ''
+  expires-time: 
+  buffer-time: 
+
+# zap logger configuration
+zap:
+  level: 'info'
+  format: 'console'
+  prefix: '[GIN-G]'
+  director: 'log'
+  link-name: 'latest_log'
+  show-line: true
+  encode-level: 'LowercaseColorLevelEncoder'
+  stacktrace-key: 'stacktrace'
+  log-in-console: true
+
+# redis configuration
+redis:
+  db: 0
+  addr: '127.0.0.1:6379'
+  password: ''
+
+# email configuration
+email:
+  to: 'xxx@qq.com'
+  port: 465
+  from: 'xxx@163.com'
+  host: 'smtp.163.com'
+  is-ssl: true
+  secret: 'xxx'
+  nickname: 'test'
+
+# casbin configuration
+casbin:
+  model-path: ''
+
+# system configuration
+system:
+  env: 'public'  # Change to "develop" to skip authentication for development mode
+  addr: 8888
+  db-type: 'mysql'
+  oss-type: 'local'    # 控制oss选择走本期还是 七牛等其他仓 自行增加其他oss仓可以在 server/utils/upload/upload.go 中 NewOss函数配置
+  use-multipoint: true
+
+# captcha configuration
+captcha:
+  key-long: 6
+  img-width: 240
+  img-height: 80
+
+# mysql connect configuration
+mysql:
+  path: '127.0.0.1:3306'
+  config: 'charset=utf8mb4&parseTime=True&loc=Local'
+  db-name: ''
+  username: ''
+  password: ''
+  max-idle-conns: 50
+  max-open-conns: 100
+  log-mode: false
+  log-zap: ""
+
+# local configuration
+local:
+  path: 'uploads/file'
+
+#aliyun sms configuration
+sms:
+  access-id: ''
+  access-key: ''
+  sign-name: ''
+  template-code: ''
+  region-id: ''
+
+# autocode configuration
+autocode:
+  root: ""
+  server: ""
+  server-api: ""
+  server-initialize: ""
+  server-model: ""
+  server-request: ""
+  server-router: ""
+  server-service: ""
+  web: ""
+  web-api: ""
+  web-flow: ""
+  web-form: ""
+  web-table: ""
+
+# qiniu configuration (请自行七牛申请对应的 公钥 私钥 bucket �?域名地址)
+qiniu:
+  zone: ""
+  bucket: ""
+  img-path: ""
+  use-https: false
+  access-key: ""
+  secret-key: ""
+  use-cdn-domains: false
+
+
+# aliyun oss configuration
+aliyun-oss:
+  endpoint: ""
+  access-key-id: ""
+  access-key-secret: ""
+  bucket-name: ""
+  bucket-url: ""
+
+# tencent cos configuration
+tencent-cos:
+  bucket: ""
+  region: ""
+  secret-id: ""
+  secret-key: ""
+  base-url: ""
+  path-prefix: ""
+
+# excel configuration
+excel:
+  dir: ""
+

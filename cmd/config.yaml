@@ -1,0 +1,15 @@
+# Gin-G Global Configuration
+
+server:
+  host: 127.0.0.1
+  port: 8090
+  name: app
+
+logger:
+  level: 'info'
+
+loggerwriter:
+  filename: app.log
+  maxsize: 100
+  maxbackups: 3
+  maxage: 10

@@ -6,10 +6,11 @@ server:
   name: app
 
 logger:
-  level: 'info'
+  level: info
 
 loggerwriter:
   filename: app.log
-  maxsize: 100
+  maxsize: 30
   maxbackups: 3
-  maxage: 10
+  maxage: 30
+  localtime: true

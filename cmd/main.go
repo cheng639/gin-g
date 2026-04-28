@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"gin-g/common/bootstrap"
+	"errors"
+	"gin-g/bootstrap"
+	"gin-g/common"
 	"gin-g/config"
 	"github.com/gin-gonic/gin"
 	"os"
@@ -11,26 +12,31 @@ import (
 
 func init() {
 	workDir, err := os.Getwd()
-	println("The current working directory is ", workDir)
 	if err != nil {
 		panic(err)
 	}
+	println("The current working directory is ", workDir)
+
 	config.Config().WorkDir = workDir
 	bootstrap.ParseConfig(path.Join(workDir, "config.yaml"))
-	println(fmt.Sprintf("Config: %+v", config.Config()))
-	
 	bootstrap.InitLogger(config.Logger())
 
 }
 
 func main() {
-	router := gin.Default()
+	defer common.RecoverAndLogPanicStack()
+
+	router := gin.New()
 	router.GET("/ping", func(c *gin.Context) {
+		defer common.RecoverAndLogPanicStack()
+
+		panic("panic6")
+		panic(errors.New("panic5"))
+
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
 	})
-	config.Logger().Info().Msg("server is running!")
-	config.Logger().Error().Msg("server is not running!")
+
 	router.Run() // listens on 0.0.0.0:8080 by default
 }

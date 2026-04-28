@@ -5,6 +5,7 @@ import (
 	"github.com/natefinch/lumberjack"
 	"github.com/rs/zerolog"
 	"path"
+	"time"
 )
 
 func InitLogger(logger *zerolog.Logger) {
@@ -14,7 +15,28 @@ func InitLogger(logger *zerolog.Logger) {
 		MaxBackups: config.Config().LoggerWriter.MaxBackups,
 		MaxAge:     config.Config().LoggerWriter.MaxAge, // days
 	}
+
+	zerolog.TimeFieldFormat = time.DateTime
 	zlog := zerolog.New(logWriter).With().Timestamp().Logger()
-	zlog = zlog.Level(zerolog.ErrorLevel)
+	switch config.Config().Logger.Level {
+	case "debug":
+		zlog = zlog.Level(zerolog.ErrorLevel)
+		break
+	case "info":
+		zlog = zlog.Level(zerolog.InfoLevel)
+		break
+	case "warn":
+		zlog = zlog.Level(zerolog.WarnLevel)
+		break
+	case "error":
+		zlog = zlog.Level(zerolog.ErrorLevel)
+		break
+	case "fatal":
+		zlog = zlog.Level(zerolog.FatalLevel)
+		break
+	default:
+		zlog = zlog.Level(zerolog.InfoLevel)
+	}
+
 	*logger = zlog
 }

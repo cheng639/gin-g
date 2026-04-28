@@ -46,3 +46,16 @@ type LoggerWriter struct {
 	Compress bool `json:"compress" yaml:"compress"`
 	// contains filtered or unexported fields
 }
+
+//config.Logger().Error().Err(errors.New("empty error")).Msgf("config: %+v", config.Config())
+//go func() {
+//	defer func() {
+//		if err := recover(); err != nil {
+//			buf := make([]byte, 1024*1024)
+//			n := runtime.Stack(buf, false)
+//			log.Printf("stack: %s", string(buf[:n]))
+//			config.Logger().Error().Msgf("error: %v, stack: %s", err, string(buf[:n]))
+//		}
+//	}()
+//	panic("panic plain3")
+//}()

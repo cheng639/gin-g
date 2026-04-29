@@ -16,5 +16,6 @@ type ServiceConfig struct {
 type Server struct {
 	Name string `json:"name" yaml:"name"`
 	Host string `json:"host" yaml:"host"`
+	IP   string `json:"ip" yaml:"ip"`
 	Port string `json:"port" yaml:"port"`
 }

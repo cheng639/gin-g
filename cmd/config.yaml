@@ -1,9 +1,10 @@
 # Gin-G Global Configuration
 
 server:
-  host: 127.0.0.1
-  port: 8090
   name: app
+  host: http://localhost
+  ip: 127.0.0.1
+  port: 8090
 
 logger:
   level: info

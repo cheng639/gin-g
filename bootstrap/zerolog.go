@@ -4,6 +4,7 @@ import (
 	"gin-g/config"
 	"github.com/natefinch/lumberjack"
 	"github.com/rs/zerolog"
+	"os"
 	"path"
 	"time"
 )
@@ -17,7 +18,9 @@ func InitLogger(logger *zerolog.Logger) {
 	}
 
 	zerolog.TimeFieldFormat = time.DateTime
-	zlog := zerolog.New(logWriter).With().Timestamp().Logger()
+	//zlog := zerolog.New(logWriter).With().Timestamp().Logger()
+	multi := zerolog.MultiLevelWriter(logWriter, os.Stdout)
+	zlog := zerolog.New(multi).With().Timestamp().Logger()
 	switch config.Config().Logger.Level {
 	case "debug":
 		zlog = zlog.Level(zerolog.ErrorLevel)

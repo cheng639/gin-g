@@ -2,9 +2,11 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"gin-g/bootstrap"
 	"gin-g/common"
 	"gin-g/config"
+	"gin-g/router"
 	"github.com/gin-gonic/gin"
 	"os"
 	"path"
@@ -24,19 +26,16 @@ func init() {
 }
 
 func main() {
-	defer common.RecoverAndLogPanicStack()
+	defer common.RecoverAndLogStack()
 
-	router := gin.New()
-	router.GET("/ping", func(c *gin.Context) {
-		defer common.RecoverAndLogPanicStack()
+	engine := gin.New()
+	engine.Use(gin.Recovery())
+	apiV1 := engine.Group("/api/v1")
+	router.RegisterRouters(engine, apiV1.BasePath())
 
-		panic("panic6")
-		panic(errors.New("panic5"))
-
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-
-	router.Run() // listens on 0.0.0.0:8080 by default
+	config.Logger().Info().Msgf("%s is running on %s port.", config.Config().Server.Name, config.Config().Server.Port)
+	err := engine.Run(config.Config().Server.Host + ":" + config.Config().Server.Port) // listens on 127.0.0.1:8090 by default
+	if err != nil {
+		config.Logger().Error().Err(errors.New(fmt.Sprintf("%v", err))).Msgf("%s start failed !", config.Config().Server.Name)
+	}
 }

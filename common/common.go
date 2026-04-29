@@ -8,7 +8,7 @@ import (
 	"runtime"
 )
 
-func RecoverAndLogPanicStack() {
+func RecoverAndLogStack() {
 	if err := recover(); err != nil {
 		buf := make([]byte, 1024*1024)
 		n := runtime.Stack(buf, false)

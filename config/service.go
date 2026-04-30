@@ -11,6 +11,7 @@ type ServiceConfig struct {
 	Server       Server       `json:"server" yaml:"server"`
 	Logger       LoggerConfig `json:"logger" yaml:"logger"`
 	LoggerWriter LoggerWriter `json:"loggerWriter" yaml:"loggerwriter"`
+	RedisConfig  RedisConfig  `json:"redis" yaml:"redis"`
 }
 
 type Server struct {

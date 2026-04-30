@@ -15,3 +15,9 @@ loggerwriter:
   maxbackups: 3
   maxage: 30
   localtime: true
+
+redis:
+  host:
+  port:
+  password:
+  database:

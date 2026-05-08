@@ -1,7 +1,11 @@
 package config
 
 import (
+	"github.com/natefinch/lumberjack"
 	"github.com/rs/zerolog"
+	"os"
+	"path"
+	"time"
 )
 
 var logger zerolog.Logger
@@ -47,15 +51,37 @@ type LoggerWriter struct {
 	// contains filtered or unexported fields
 }
 
-//config.Logger().Error().Err(errors.New("empty error")).Msgf("config: %+v", config.Config())
-//go func() {
-//	defer func() {
-//		if err := recover(); err != nil {
-//			buf := make([]byte, 1024*1024)
-//			n := runtime.Stack(buf, false)
-//			log.Printf("stack: %s", string(buf[:n]))
-//			config.Logger().Error().Msgf("error: %v, stack: %s", err, string(buf[:n]))
-//		}
-//	}()
-//	panic("panic plain3")
-//}()
+func InitLogger() {
+	logWriter := &lumberjack.Logger{
+		Filename:   path.Join(Config().WorkDir, Config().Server.Name+".log"),
+		MaxSize:    Config().LoggerWriter.MaxSize, // megabytes
+		MaxBackups: Config().LoggerWriter.MaxBackups,
+		MaxAge:     Config().LoggerWriter.MaxAge, // days
+	}
+
+	zerolog.TimeFieldFormat = time.DateTime
+	//zlog := zerolog.New(logWriter).With().Timestamp().Logger()
+	multi := zerolog.MultiLevelWriter(logWriter, os.Stdout)
+	zlog := zerolog.New(multi).With().Timestamp().Logger()
+	switch Config().Logger.Level {
+	case "debug":
+		zlog = zlog.Level(zerolog.ErrorLevel)
+		break
+	case "info":
+		zlog = zlog.Level(zerolog.InfoLevel)
+		break
+	case "warn":
+		zlog = zlog.Level(zerolog.WarnLevel)
+		break
+	case "error":
+		zlog = zlog.Level(zerolog.ErrorLevel)
+		break
+	case "fatal":
+		zlog = zlog.Level(zerolog.FatalLevel)
+		break
+	default:
+		zlog = zlog.Level(zerolog.InfoLevel)
+	}
+
+	logger = zlog
+}

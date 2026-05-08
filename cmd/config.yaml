@@ -15,9 +15,14 @@ loggerwriter:
   maxbackups: 3
   maxage: 30
   localtime: true
+  compress: true
 
 redis:
-  host:
-  port:
-  password:
-  database:
+  host: 192.168.14.128
+  port: 6379
+  password: foobared
+  database: 0
+
+foo:
+  bar: 123
+

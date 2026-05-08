@@ -2,7 +2,7 @@ package config
 
 import (
 	"context"
-	"github.com/go-redis/redis/v8"
+	"github.com/redis/go-redis/v9"
 	"time"
 )
 
@@ -16,7 +16,7 @@ type RedisConfig struct {
 var sClient StandaloneClient
 
 type StandaloneClient struct {
-	Client redis.Client
+	Client *redis.Client
 	ctx    context.Context
 }
 
@@ -24,15 +24,36 @@ func RedisClient() *StandaloneClient {
 	return &sClient
 }
 
-func (r *StandaloneClient) IsConnection() bool {
+func InitRedisClient() {
+	sClient.ctx = context.Background()
+	sClient.Client = redis.NewClient(&redis.Options{
+		Addr:               Config().Redis.Host + ":" + Config().Redis.Port,
+		Password:           Config().Redis.Password, // no password set
+		DB:                 Config().Redis.Database, // use default DB
+		Protocol:           3,                       // specify 2 for RESP 2 or 3 for RESP 3
+		DialerRetries:      5,
+		DialerRetryTimeout: 100 * time.Millisecond, // used when DialerRetryBackoff is nil
+
+		// Optional: exponential backoff with jitter and a cap.
+		DialerRetryBackoff: redis.DialRetryBackoffExponential(100*time.Millisecond, 2*time.Second),
+	})
+
+	ok, err := sClient.IsConnection()
+	if !ok {
+		panic(err)
+	}
+
+}
+
+func (r *StandaloneClient) IsConnection() (bool, error) {
 	var err error
 
 	_, err = r.Client.Ping(r.ctx).Result()
 	if err != nil {
-		return false
+		return false, err
 	}
 
-	return true
+	return true, nil
 }
 
 func (r *StandaloneClient) Close() error {

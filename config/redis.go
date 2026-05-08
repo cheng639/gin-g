@@ -119,3 +119,11 @@ func (r *StandaloneClient) ZAddArgs(key string, args redis.ZAddArgs) (int64, err
 func (r *StandaloneClient) ZCount(key, min, max string) (int64, error) {
 	return r.Client.ZCount(r.ctx, key, min, max).Result()
 }
+
+func (r *StandaloneClient) GeoAdd(key string, geoLocation ...*redis.GeoLocation) (int64, error) {
+	return r.Client.GeoAdd(r.ctx, key, geoLocation...).Result()
+}
+
+func (r *StandaloneClient) GeoSearch(key string, q *redis.GeoSearchQuery) ([]string, error) {
+	return r.Client.GeoSearch(r.ctx, key, q).Result()
+}

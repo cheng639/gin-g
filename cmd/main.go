@@ -31,6 +31,7 @@ func main() {
 	config.ParseConfig(path.Join(workDir, "config.yaml"))
 	config.InitLogger()
 	config.InitRedisClient()
+	config.InitGormDB()
 
 	engine := gin.New()
 	engine.Use(middleware.RecoveryMiddleware())

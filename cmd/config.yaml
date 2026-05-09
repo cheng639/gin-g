@@ -23,6 +23,20 @@ redis:
   password: foobared
   database: 0
 
-foo:
-  bar: 123
+mysql:
+  maxidleconns: 5
+  maxopenconns: 76
+  name: test
+  user: root
+  password: root
+  ip: 127.0.0.1
+  port: 3306
+  debug: true
+  maxlifetime: 120
+  automigrate: false
+  interpolateparams: true
+
+version:  2.0.1
+
+
 

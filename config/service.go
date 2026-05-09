@@ -1,6 +1,8 @@
 package config
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
@@ -13,11 +15,13 @@ func Config() *ServiceConfig {
 }
 
 type ServiceConfig struct {
-	WorkDir      string
+	WorkDir      string       `json:"work_dir"`
+	Version      string       `json:"version" yaml:"version"`
 	Server       Server       `json:"server" yaml:"server"`
 	Logger       LoggerConfig `json:"logger" yaml:"logger"`
-	LoggerWriter LoggerWriter `json:"loggerWriter" yaml:"loggerwriter"`
+	LoggerWriter LoggerWriter `json:"loggerwriter" yaml:"loggerwriter"`
 	Redis        RedisConfig  `json:"redis" yaml:"redis"`
+	Mysql        Mysql        `json:"mysql" yaml:"mysql"`
 }
 
 type Server struct {
@@ -38,7 +42,7 @@ func ParseConfig(path string) *viper.Viper {
 
 	v.OnConfigChange(func(e fsnotify.Event) {
 		println(fmt.Sprintf("config file changed: %s", e.Name))
-		println(fmt.Sprintf("config:%+v", Config()))
+		PrettyPrint(Config())
 		if err2 := v.Unmarshal(Config()); err2 != nil {
 			fmt.Println(fmt.Errorf("Parse config file on changed error: %s \n", err2))
 		}
@@ -46,7 +50,24 @@ func ParseConfig(path string) *viper.Viper {
 	if err1 := v.Unmarshal(Config()); err1 != nil {
 		fmt.Println(fmt.Errorf("Parse config file error: %s \n", err1))
 	}
-	println(fmt.Sprintf("config:%+v", Config()))
+	PrettyPrint(Config())
 
 	return v
+}
+
+func PrettyPrint(v interface{}) {
+	b, err := json.Marshal(v)
+	if err != nil {
+		fmt.Println(v)
+		return
+	}
+
+	var out bytes.Buffer
+	err = json.Indent(&out, b, "", "  ")
+	if err != nil {
+		fmt.Println(v)
+		return
+	}
+
+	fmt.Println(out.String())
 }

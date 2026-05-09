@@ -15,7 +15,7 @@
 ### 1.1 项目介绍
 
 
-> Gin-G是一个基于gorm和gin开发的后台web框架，源自gin-vue-admin，授权登录，路由，控制器，验证，模型等大不相同，是一个适合RESTful API 开发的web框架
+> Gin-G是一个基于gorm和gin开发的后台web框架，是一个适合中小型项目开发的web框架
 
 
 

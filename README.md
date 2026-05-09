@@ -15,7 +15,7 @@
 ### 1.1 项目介绍
 
 
-> Gin-G是一个基于gorm和gin开发的后台web框架，是一个适合中小型项目开发的web框架
+> Gin-G是一个基于gorm和gin开发的后台web框架，适合中小型项目开发RESTful API
 
 
 
